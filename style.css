@@ -443,6 +443,14 @@ body {
   min-width: 0; /* テキストがはみ出ないようにする */
 }
 
+/* ⑤ 場所名とカテゴリタグを横並びにする行 */
+.card-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
 /* 場所名 */
 .card-place {
   font-size: 0.98rem;
@@ -451,6 +459,20 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* ⑤ カテゴリタグ */
+.card-category {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 400;
+  padding: 2px 9px;
+  border-radius: 20px;
+  background-color: #e8f4fa;
+  color: #5bb8d4;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* 経過日数・頻度などの補足情報 */
@@ -472,6 +494,19 @@ body {
 /* 超過しているとき：赤文字 */
 .card-countdown.is-overdue {
   color: #d97474;
+}
+
+/* ④ 掃除履歴 */
+.card-history {
+  font-size: 0.73rem;
+  color: #8ab4c4;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* 履歴がまだない場合は薄くする */
+.card-history-empty {
+  color: #c0d8e4;
 }
 
 /* 状態バッジ */
@@ -552,6 +587,48 @@ body {
   padding: 32px 0 12px;
   display: none;
   font-weight: 400;
+}
+
+/* ===== ⑤ カテゴリフィルタータブ ===== */
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 0.5px solid #a8d8ec;
+  background-color: transparent;
+  color: #5bb8d4;
+  font-size: 0.76rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tab:hover {
+  background-color: #eef8fc;
+}
+
+/* 選択中のタブ */
+.tab.is-active {
+  background-color: #5bb8d4;
+  color: white;
+  border-color: #5bb8d4;
+}
+
+/* ===== ① 掃除完了アニメーション ===== */
+@keyframes doneFlash {
+  0%   { background-color: #fff; }
+  25%  { background-color: #cff0fb; box-shadow: 0 0 0 2px rgba(91, 184, 212, 0.35); }
+  100% { background-color: #fff; box-shadow: none; }
+}
+
+.is-done-flash {
+  animation: doneFlash 0.6s ease-out forwards;
 }
 
 /* ===== レスポンシブ：画面が広いときは通常カードのボタンを横並びに ===== */

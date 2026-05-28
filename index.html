@@ -54,6 +54,11 @@
       </div>
 
       <div class="form-field">
+        <label class="form-label" for="input-category">カテゴリ（任意）</label>
+        <input class="form-input" type="text" id="input-category" placeholder="例：キッチン、バス・トイレ" maxlength="20">
+      </div>
+
+      <div class="form-field">
         <label class="form-label" for="input-frequency">掃除の頻度（日ごと）</label>
         <input class="form-input" type="number" id="input-frequency" placeholder="例：7（1週間ごと）" min="1">
       </div>
@@ -73,6 +78,9 @@
         <h2 class="section-title">掃除項目リスト</h2>
         <button class="btn btn-sort" id="btn-sort">緊急順に並べる</button>
       </div>
+
+      <!-- カテゴリフィルタータブ（JavaScriptで生成）-->
+      <div id="filter-tabs" class="filter-tabs"></div>
 
       <!-- カードはJavaScriptで生成して、ここに表示する -->
       <div id="card-list"></div>
