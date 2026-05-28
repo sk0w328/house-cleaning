@@ -39,14 +39,14 @@ function calcElapsedDays(lastCleaned) {
 // 経過日数と掃除頻度を比べて、状態を返す
 // 戻り値: { cssClass: CSSのクラス名, text: 表示するテキスト }
 function getStatus(elapsedDays, frequency) {
-  if (elapsedDays < frequency) {
-    return { cssClass: 'status-ok', text: 'まだ大丈夫' };
+  if (elapsedDays >= frequency) {
+    return { cssClass: 'status-overdue', text: '掃除した方がいい' };
   }
-  if (elapsedDays === frequency) {
+  // 掃除予定日の3日前からそろそろ掃除
+  if (elapsedDays >= frequency - 3) {
     return { cssClass: 'status-soon', text: 'そろそろ掃除' };
   }
-  // elapsedDays > frequency
-  return { cssClass: 'status-overdue', text: '掃除した方がいい' };
+  return { cssClass: 'status-ok', text: 'まだ大丈夫' };
 }
 
 
@@ -58,9 +58,9 @@ let currentSort = 'added';
 // 1件のアイテムの緊急度を数字で返す（大きいほど緊急）
 function getStatusPriority(item) {
   const elapsed = calcElapsedDays(item.lastCleaned);
-  if (elapsed > item.frequency)   return 2; // 掃除した方がいい
-  if (elapsed === item.frequency) return 1; // そろそろ掃除
-  return 0;                                 // まだ大丈夫
+  if (elapsed >= item.frequency)      return 2; // 掃除した方がいい
+  if (elapsed >= item.frequency - 3)  return 1; // そろそろ掃除（3日前から）
+  return 0;                                      // まだ大丈夫
 }
 
 // ソート順に並べたデータの配列を返す（元の配列は変更しない）
