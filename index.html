@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>そろそろお掃除アプリ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="header">
+    <h1 class="header-title">🧹 そろそろお掃除</h1>
+    <p class="header-subtitle">掃除の記録をかんたん管理</p>
+  </header>
+
+  <main class="main">
+    <div class="layout">
+
+    <!-- 掃除項目の追加フォーム（PC：左カラム、スマホ：上） -->
+    <section class="section">
+      <h2 class="section-title">掃除項目を追加</h2>
+
+      <div class="form-field">
+        <label class="form-label" for="input-place">掃除する場所</label>
+        <input class="form-input" type="text" id="input-place" placeholder="例：トイレ、キッチン" maxlength="20">
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="input-frequency">掃除の頻度（日ごと）</label>
+        <input class="form-input" type="number" id="input-frequency" placeholder="例：7（1週間ごと）" min="1">
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="input-last-cleaned">最後に掃除した日</label>
+        <input class="form-input" type="date" id="input-last-cleaned">
+      </div>
+
+      <button class="btn btn-add" id="btn-add">追加する</button>
+    </section>
+
+    <!-- 掃除項目の一覧（PC：右カラム、スマホ：下） -->
+    <section class="section">
+      <h2 class="section-title">掃除項目リスト</h2>
+
+      <!-- カードはJavaScriptで生成して、ここに表示する -->
+      <div id="card-list"></div>
+
+      <!-- 項目がないときのメッセージ -->
+      <p id="empty-message" class="empty-message">
+        まだ登録されていません。<br>上のフォームから追加してみましょう！
+      </p>
+    </section>
+
+    </div><!-- /.layout -->
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

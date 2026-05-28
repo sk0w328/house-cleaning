@@ -1,0 +1,262 @@
+/* ===== リセット：ブラウザごとのスタイルのばらつきをなくす ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== ページ全体 ===== */
+body {
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  background-color: #f0f9f4; /* 淡いグリーン系の背景 */
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ===== ヘッダー ===== */
+.header {
+  background: linear-gradient(135deg, #81c784, #4db6ac); /* 淡いグリーン〜水色のグラデーション */
+  color: white;
+  text-align: center;
+  padding: 28px 16px;
+}
+
+.header-title {
+  font-size: 1.7rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+}
+
+.header-subtitle {
+  font-size: 0.88rem;
+  margin-top: 6px;
+  opacity: 0.88;
+}
+
+/* ===== メインエリア ===== */
+.main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+/* ===== 2カラムレイアウト ===== */
+/* スマホは1カラム、PC（768px以上）では左右に並べる */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr; /* スマホ：1カラム */
+  gap: 20px;
+  align-items: start; /* 高さが違っても上揃えにする */
+}
+
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 320px 1fr; /* PC：左フォーム固定幅・右カード可変 */
+  }
+}
+
+/* ===== セクション（カードのような白いブロック）===== */
+.section {
+  background: white;
+  border-radius: 16px; /* 角丸 */
+  padding: 24px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
+
+.section-title {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e8f5e9; /* 淡いグリーンの区切り線 */
+}
+
+/* ===== フォーム部品 ===== */
+.form-field {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.83rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #cde8e4; /* 淡い水色のボーダー */
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #fafdfd;
+}
+
+/* フォーカスしたときのボーダー色 */
+.form-input:focus {
+  border-color: #4db6ac;
+}
+
+/* ===== ボタン共通 ===== */
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+/* ボタンを押したときに少し小さくして「押した感」を出す */
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* 「追加する」ボタン */
+.btn-add {
+  width: 100%;
+  background-color: #4db6ac; /* 水色 */
+  color: white;
+  padding: 14px;
+  margin-top: 4px;
+  font-size: 1rem;
+}
+
+.btn-add:hover {
+  opacity: 0.88;
+}
+
+/* 「掃除完了」ボタン */
+.btn-done {
+  background-color: #e8f5e9; /* 淡いグリーン */
+  color: #2e7d32;
+  font-size: 0.82rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.btn-done:hover {
+  background-color: #c8e6c9;
+}
+
+/* 削除ボタン */
+.btn-delete {
+  background: none;
+  color: #bbb;
+  font-size: 1.3rem;
+  padding: 6px 10px;
+  line-height: 1;
+  border-radius: 8px;
+}
+
+.btn-delete:hover {
+  color: #e57373; /* ホバー時にピンク系 */
+  background-color: #fce4ec;
+}
+
+/* ===== 掃除項目カード ===== */
+.card {
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-left: 5px solid; /* 状態によって色を変える左のライン */
+  background-color: #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* カード内：場所名や情報のエリア */
+.card-body {
+  flex: 1;
+  min-width: 0; /* テキストがはみ出ないようにする */
+}
+
+/* 場所名 */
+.card-place {
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 長すぎる名前は「...」で省略 */
+}
+
+/* 経過日数・頻度などの補足情報 */
+.card-info {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* 状態ラベル（まだ大丈夫・そろそろ・要掃除） */
+.card-status-label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 20px; /* 丸いラベル */
+  margin-top: 6px;
+}
+
+/* カード右側のボタンエリア */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ===== 状態ごとの色 ===== */
+
+/* まだ大丈夫：グリーン系 */
+.status-ok {
+  border-color: #66bb6a;
+}
+.status-ok .card-status-label {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* そろそろ掃除：黄色系 */
+.status-soon {
+  border-color: #ffa726;
+}
+.status-soon .card-status-label {
+  background-color: #fff8e1;
+  color: #e65100;
+}
+
+/* 掃除した方がいい：赤・ピンク系 */
+.status-overdue {
+  border-color: #ef5350;
+}
+.status-overdue .card-status-label {
+  background-color: #fce4ec;
+  color: #c62828;
+}
+
+/* ===== 空のとき表示するメッセージ ===== */
+.empty-message {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  padding: 24px 0 8px;
+  display: none; /* JavaScriptで表示を切り替える */
+}
+
+/* ===== レスポンシブ：画面が広いときはボタンを横並びに ===== */
+@media (min-width: 480px) {
+  .card-actions {
+    flex-direction: row;
+    align-items: center;
+  }
+}
