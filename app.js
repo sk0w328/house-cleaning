@@ -183,11 +183,19 @@ function createCardHTML(item) {
   // 経過日数の表示テキスト
   const elapsedText = elapsedDays === 0 ? '今日掃除した' : `${elapsedDays}日前に掃除`;
 
+  // 次の掃除まで何日か（マイナスは超過）
+  const daysUntilNext = item.frequency - elapsedDays;
+  const countdownText = daysUntilNext === 0
+    ? '今日が掃除予定日'
+    : `あと${daysUntilNext}日で掃除予定`;
+  const countdownClass = daysUntilNext < 0 ? 'card-countdown is-overdue' : 'card-countdown';
+
   return `
     <div class="card ${status.cssClass}" data-id="${item.id}">
       <div class="card-body">
         <div class="card-place">${escapeHTML(item.place)}</div>
         <div class="card-info">${elapsedText}（頻度：${item.frequency}日ごと）</div>
+        <div class="${countdownClass}">${countdownText}</div>
         <span class="card-status-label">${status.text}</span>
       </div>
       <div class="card-actions">

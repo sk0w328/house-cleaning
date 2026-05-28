@@ -295,6 +295,19 @@ body {
   font-weight: 400;
 }
 
+/* 次の掃除までのカウントダウン */
+.card-countdown {
+  font-size: 0.76rem;
+  color: #5bb8d4;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* 超過しているとき：赤文字 */
+.card-countdown.is-overdue {
+  color: #d97474;
+}
+
 /* 状態バッジ */
 .card-status-label {
   display: inline-block;
