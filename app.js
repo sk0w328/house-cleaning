@@ -185,9 +185,14 @@ function createCardHTML(item) {
 
   // 次の掃除まで何日か（マイナスは超過）
   const daysUntilNext = item.frequency - elapsedDays;
-  const countdownText = daysUntilNext === 0
-    ? '今日が掃除予定日'
-    : `あと${daysUntilNext}日で掃除予定`;
+  let countdownText;
+  if (daysUntilNext > 0) {
+    countdownText = `あと${daysUntilNext}日で掃除予定`;
+  } else if (daysUntilNext === 0) {
+    countdownText = '今日が掃除予定日';
+  } else {
+    countdownText = `${Math.abs(daysUntilNext)}日で超えています`;
+  }
   const countdownClass = daysUntilNext < 0 ? 'card-countdown is-overdue' : 'card-countdown';
 
   return `
