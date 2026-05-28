@@ -235,7 +235,7 @@ body {
 
 /* ===== セクション（白いカードブロック）===== */
 .section {
-  background: white;
+  background: #fffef9; /* 温かみのあるオフホワイト */
   border-radius: 16px;
   padding: 28px 24px;
   border: 1px solid #c8eaf4; /* 薄い水色ボーダー */
@@ -292,7 +292,7 @@ body {
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  background-color: #f5fbfe;
+  background-color: #fdfcf8; /* 温白色の入力欄 */
   color: #3a3a3a;
   font-weight: 400;
 }
@@ -431,7 +431,7 @@ body {
   margin-bottom: 10px;
   border: 1px solid #c8eaf4;        /* 薄い水色ボーダー（全体）*/
   border-left: 3px solid;            /* 状態ごとにアクセントラインを上書き */
-  background-color: #fff;
+  background-color: #fffef9; /* セクションと同じ温白色 */
   display: flex;
   align-items: center;
   gap: 14px;
@@ -562,7 +562,7 @@ body {
 .card-editing {
   border-color: #5bb8d4 !important;
   border-left-color: #5bb8d4 !important;
-  background-color: #f5fbfe !important;
+  background-color: #f0f9fc !important; /* 編集中は水色寄りで区別 */
   align-items: flex-start;
 }
 
