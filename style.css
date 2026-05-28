@@ -238,8 +238,8 @@ body {
   background: #fffef9; /* 温かみのあるオフホワイト */
   border-radius: 16px;
   padding: 28px 24px;
-  border: 1px solid #c8eaf4; /* 薄い水色ボーダー */
-  box-shadow: none; /* シャドウなしでスッキリ */
+  border: 1px solid #c8eaf4;
+  box-shadow: 0 4px 16px rgba(50, 100, 130, 0.07), 0 1px 3px rgba(50, 100, 130, 0.04);
 }
 
 .section-title {
@@ -357,30 +357,32 @@ body {
   color: white;
 }
 
-/* 「掃除完了」ボタン */
+/* 「掃除完了」ボタン：メインアクションなのでソリッド塗り */
 .btn-done {
-  background-color: #eef8fc;
-  color: #3a9cbd;
+  background-color: #5bb8d4;
+  color: white;
   font-size: 0.78rem;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
 }
 
 .btn-done:hover {
-  background-color: #ddf1f8;
+  opacity: 0.88;
 }
 
-/* 編集ボタン */
+/* 編集ボタン：サブアクションなのでゴースト（枠線のみ）*/
 .btn-edit {
-  background-color: #eef8fc;
-  color: #5bb8d4;
+  background-color: transparent;
+  color: #8ac8da;
   font-size: 0.78rem;
-  padding: 6px 12px;
+  padding: 5px 11px;
   border-radius: 6px;
+  border: 0.5px solid #b8dcea;
 }
 
 .btn-edit:hover {
-  background-color: #ddf1f8;
+  background-color: #eef8fc;
+  color: #5bb8d4;
 }
 
 /* 保存ボタン */
@@ -429,12 +431,22 @@ body {
   border-radius: 10px;
   padding: 16px 14px;
   margin-bottom: 10px;
-  border: 1px solid #c8eaf4;        /* 薄い水色ボーダー（全体）*/
-  border-left: 3px solid;            /* 状態ごとにアクセントラインを上書き */
-  background-color: #fffef9; /* セクションと同じ温白色 */
+  border: 1px solid #c8eaf4;
+  border-left: 3px solid;
+  background-color: #fffef9;
   display: flex;
   align-items: center;
   gap: 14px;
+  box-shadow: 0 2px 8px rgba(50, 100, 130, 0.06), 0 1px 2px rgba(50, 100, 130, 0.03);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+/* デスクトップのみ：カードをホバーすると少し浮き上がる */
+@media (min-width: 768px) {
+  .card:hover {
+    box-shadow: 0 6px 20px rgba(50, 100, 130, 0.11), 0 2px 5px rgba(50, 100, 130, 0.05);
+    transform: translateY(-1px);
+  }
 }
 
 /* カード内：場所名や情報のエリア */
