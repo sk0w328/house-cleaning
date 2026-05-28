@@ -41,7 +41,11 @@
 
     <!-- 掃除項目の一覧（PC：右カラム、スマホ：下） -->
     <section class="section">
-      <h2 class="section-title">掃除項目リスト</h2>
+      <!-- タイトルとソートボタンを横並びにするコンテナ -->
+      <div class="list-header">
+        <h2 class="section-title">掃除項目リスト</h2>
+        <button class="btn btn-sort" id="btn-sort">緊急順に並べる</button>
+      </div>
 
       <!-- カードはJavaScriptで生成して、ここに表示する -->
       <div id="card-list"></div>

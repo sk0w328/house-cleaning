@@ -50,10 +50,133 @@ function getStatus(elapsedDays, frequency) {
 }
 
 
+// ===== 並び替え =====
+
+// 現在のソート順（'added': 追加順, 'urgent': 緊急順）
+let currentSort = 'added';
+
+// 1件のアイテムの緊急度を数字で返す（大きいほど緊急）
+function getStatusPriority(item) {
+  const elapsed = calcElapsedDays(item.lastCleaned);
+  if (elapsed > item.frequency)   return 2; // 掃除した方がいい
+  if (elapsed === item.frequency) return 1; // そろそろ掃除
+  return 0;                                 // まだ大丈夫
+}
+
+// ソート順に並べたデータの配列を返す（元の配列は変更しない）
+function getSortedData(data) {
+  if (currentSort === 'added') return data;
+
+  return [...data].sort(function(a, b) {
+    // 緊急度が高い順に並べる
+    const priorityDiff = getStatusPriority(b) - getStatusPriority(a);
+    if (priorityDiff !== 0) return priorityDiff;
+    // 同じ緊急度なら経過日数が多い順（より放置されているものを上に）
+    return calcElapsedDays(b.lastCleaned) - calcElapsedDays(a.lastCleaned);
+  });
+}
+
+// ソートボタンを押したときの処理
+function handleSortToggle() {
+  currentSort = currentSort === 'added' ? 'urgent' : 'added';
+  renderCards();
+}
+
+
+// ===== 編集 =====
+
+// 現在編集中の項目ID（nullなら編集していない）
+let editingId = null;
+
+// 編集フォームのHTMLを組み立てて返す
+function createEditFormHTML(item) {
+  return `
+    <div class="card card-editing" data-id="${item.id}">
+      <div class="card-body">
+        <div class="edit-field">
+          <label class="form-label">掃除する場所</label>
+          <input class="form-input" type="text" id="edit-place" value="${escapeHTML(item.place)}" maxlength="20">
+        </div>
+        <div class="edit-field">
+          <label class="form-label">掃除の頻度（日ごと）</label>
+          <input class="form-input" type="number" id="edit-frequency" value="${item.frequency}" min="1">
+        </div>
+        <div class="edit-field">
+          <label class="form-label">最後に掃除した日</label>
+          <input class="form-input" type="date" id="edit-last-cleaned" value="${item.lastCleaned}">
+        </div>
+      </div>
+      <div class="card-actions card-actions-edit">
+        <button class="btn btn-save" onclick="handleSaveEdit('${item.id}')">保存</button>
+        <button class="btn btn-cancel" onclick="handleCancelEdit()">キャンセル</button>
+      </div>
+    </div>
+  `;
+}
+
+// 「編集」ボタンを押したときの処理（編集モードを開始する）
+function handleEditStart(id) {
+  editingId = id;
+  renderCards();
+}
+
+// 「保存」ボタンを押したときの処理
+function handleSaveEdit(id) {
+  const placeInput     = document.getElementById('edit-place');
+  const frequencyInput = document.getElementById('edit-frequency');
+  const lastCleanedInput = document.getElementById('edit-last-cleaned');
+
+  const place       = placeInput.value.trim();
+  const frequency   = parseInt(frequencyInput.value, 10);
+  const lastCleaned = lastCleanedInput.value;
+
+  // 入力チェック
+  if (!place) {
+    alert('掃除する場所を入力してください。');
+    placeInput.focus();
+    return;
+  }
+  if (!frequencyInput.value || frequency < 1) {
+    alert('掃除の頻度を1以上の数字で入力してください。');
+    frequencyInput.focus();
+    return;
+  }
+  if (!lastCleaned) {
+    alert('最後に掃除した日を入力してください。');
+    lastCleanedInput.focus();
+    return;
+  }
+
+  // データを更新して保存する
+  const data = loadData();
+  const item = data.find(function(d) { return d.id === id; });
+  if (item) {
+    item.place       = place;
+    item.frequency   = frequency;
+    item.lastCleaned = lastCleaned;
+    saveData(data);
+  }
+
+  editingId = null;
+  renderCards();
+}
+
+// 「キャンセル」ボタンを押したときの処理
+function handleCancelEdit() {
+  editingId = null;
+  renderCards();
+}
+
+
 // ===== カードのHTML生成 =====
 
 // 1件分のカードHTMLを組み立てて文字列で返す
 function createCardHTML(item) {
+  // 編集中のカードは編集フォームを表示する
+  if (item.id === editingId) {
+    return createEditFormHTML(item);
+  }
+
   const elapsedDays = calcElapsedDays(item.lastCleaned);
   const status = getStatus(elapsedDays, item.frequency);
 
@@ -68,7 +191,8 @@ function createCardHTML(item) {
         <span class="card-status-label">${status.text}</span>
       </div>
       <div class="card-actions">
-        <button class="btn btn-done" onclick="handleDone('${item.id}')">掃除完了</button>
+        <button class="btn btn-done"   onclick="handleDone('${item.id}')">掃除完了</button>
+        <button class="btn btn-edit"   onclick="handleEditStart('${item.id}')">編集</button>
         <button class="btn btn-delete" onclick="handleDelete('${item.id}')" title="削除">×</button>
       </div>
     </div>
@@ -93,6 +217,16 @@ function renderCards() {
   const cardList = document.getElementById('card-list');
   const emptyMessage = document.getElementById('empty-message');
 
+  // ソートボタンのテキストと見た目を現在の状態に合わせて更新する
+  const sortBtn = document.getElementById('btn-sort');
+  if (currentSort === 'urgent') {
+    sortBtn.textContent = '追加順に並べる';
+    sortBtn.classList.add('is-active');
+  } else {
+    sortBtn.textContent = '緊急順に並べる';
+    sortBtn.classList.remove('is-active');
+  }
+
   if (data.length === 0) {
     cardList.innerHTML = '';
     emptyMessage.style.display = 'block';
@@ -100,7 +234,8 @@ function renderCards() {
   }
 
   emptyMessage.style.display = 'none';
-  cardList.innerHTML = data.map(createCardHTML).join('');
+  const sortedData = getSortedData(data);
+  cardList.innerHTML = sortedData.map(createCardHTML).join('');
 }
 
 
@@ -214,6 +349,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 「追加する」ボタンにクリックイベントを設定する
   document.getElementById('btn-add').addEventListener('click', handleAdd);
+
+  // ソートボタンにクリックイベントを設定する
+  document.getElementById('btn-sort').addEventListener('click', handleSortToggle);
 
   // 「最後に掃除した日」の入力欄でEnterを押しても追加できるようにする
   document.getElementById('input-last-cleaned').addEventListener('keydown', function(e) {
