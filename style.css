@@ -14,35 +14,201 @@ body {
   font-weight: 400;
 }
 
-/* ===== ヘッダー ===== */
-/* グラデーションをやめ、フラットなパステル水色に */
-.header {
-  background-color: #b8e4f0;
-  text-align: center;
-  padding: 36px 16px;
+/* ===== ヒーローヘッダー ===== */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 56px 24px 48px;
+  background:
+    radial-gradient(circle at 18% 30%, rgba(255, 255, 255, 0.95), transparent 18%),
+    radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.7), transparent 14%),
+    linear-gradient(135deg, #f8fdff 0%, #eef9fc 45%, #e3f5fb 100%);
+  border-bottom: 1px solid rgba(114, 174, 194, 0.18);
 }
 
-.header-title {
-  font-size: 1.55rem;
-  font-weight: 500;
-  color: #1a6a88;
-  letter-spacing: 0.06em;
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 220px;
+  right: -120px;
+  top: -70px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  transform: rotate(-18deg);
+  filter: blur(2px);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 680px;
+  height: 240px;
+  left: -180px;
+  bottom: -150px;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  transform: rotate(12deg);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 32px;
 }
 
-/* Tabler Iconsのアイコンサイズ調整 */
-.header-title .ti {
-  font-size: 1.4rem;
+.hero-icon {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(121, 190, 213, 0.35);
+  box-shadow:
+    0 18px 45px rgba(69, 150, 180, 0.18),
+    inset 0 0 22px rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
 }
 
-.header-subtitle {
-  font-size: 0.83rem;
-  margin-top: 6px;
-  color: #3a8aaa;
-  font-weight: 400;
+.sparkle {
+  position: absolute;
+  color: #4aa9c7;
+  text-shadow: 0 6px 18px rgba(74, 169, 199, 0.35);
+}
+
+.sparkle-main {
+  font-size: 48px;
+  left: 32px;
+  top: 28px;
+}
+
+.sparkle-small {
+  font-size: 24px;
+  right: 24px;
+  top: 30px;
+  opacity: 0.8;
+}
+
+.sparkle-mini {
+  font-size: 20px;
+  right: 28px;
+  bottom: 28px;
+  opacity: 0.75;
+}
+
+.hero-text {
+  text-align: center;
+}
+
+.hero-text h1 {
+  margin: 0;
+  color: #1f3445;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 28px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(116, 183, 206, 0.3);
+  box-shadow: 0 12px 30px rgba(85, 151, 176, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.hero-subtitle p {
+  margin: 0;
+  color: #4d91aa;
+  font-size: clamp(15px, 2vw, 22px);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+
+.hero-subtitle span {
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #70bfd6, transparent);
+}
+
+.hero-line {
+  position: relative;
+  z-index: 1;
+  width: min(360px, 70%);
+  height: 1px;
+  margin: 34px auto 0;
+  background: linear-gradient(90deg, transparent, rgba(84, 181, 210, 0.75), transparent);
+}
+
+.hero-line span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  background: #5bb8d2;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: 0 0 18px rgba(91, 184, 210, 0.55);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 44px 18px 40px;
+  }
+
+  .hero-inner {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .hero-icon {
+    width: 84px;
+    height: 84px;
+  }
+
+  .sparkle-main {
+    font-size: 36px;
+    left: 25px;
+    top: 20px;
+  }
+
+  .sparkle-small {
+    font-size: 18px;
+    right: 18px;
+    top: 22px;
+  }
+
+  .sparkle-mini {
+    font-size: 16px;
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .hero-text h1 {
+    font-size: 36px;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-subtitle {
+    padding: 10px 18px;
+    gap: 10px;
+  }
+
+  .hero-subtitle span {
+    width: 28px;
+  }
 }
 
 /* ===== メインエリア ===== */
