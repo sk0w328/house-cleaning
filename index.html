@@ -55,7 +55,8 @@
 
       <div class="form-field">
         <label class="form-label" for="input-category">カテゴリ（任意）</label>
-        <input class="form-input" type="text" id="input-category" placeholder="例：キッチン、バス・トイレ" maxlength="20">
+        <input class="form-input" type="text" id="input-category" placeholder="例：キッチン、バス・トイレ" maxlength="20" list="category-suggestions" autocomplete="off">
+        <datalist id="category-suggestions"></datalist>
       </div>
 
       <div class="form-field">
@@ -65,7 +66,10 @@
 
       <div class="form-field">
         <label class="form-label" for="input-last-cleaned">最後に掃除した日</label>
-        <input class="form-input" type="date" id="input-last-cleaned">
+        <div class="date-input-row">
+          <input class="form-input" type="date" id="input-last-cleaned">
+          <button class="btn btn-today" type="button" id="btn-today-main">今日</button>
+        </div>
       </div>
 
       <button class="btn btn-add" id="btn-add">追加する</button>

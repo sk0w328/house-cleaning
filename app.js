@@ -86,6 +86,23 @@ function getFilteredData(data) {
   return data.filter(function(item) { return item.category === currentCategory; });
 }
 
+// カテゴリdatalistの候補を更新する
+function updateCategoryDatalist() {
+  const data = loadData();
+  const categories = getCategories(data);
+  const datalist = document.getElementById('category-suggestions');
+  if (!datalist) return;
+  datalist.innerHTML = categories.map(function(cat) {
+    return '<option value="' + escapeHTML(cat) + '">';
+  }).join('');
+}
+
+// 日付入力欄に今日の日付をセットする
+function setDateToToday(inputId) {
+  const input = document.getElementById(inputId);
+  if (input) input.value = getTodayString();
+}
+
 // カテゴリタブをHTMLに描画する
 function renderFilterTabs(data) {
   const tabsContainer = document.getElementById('filter-tabs');
@@ -127,7 +144,7 @@ function createEditFormHTML(item) {
         </div>
         <div class="edit-field">
           <label class="form-label">カテゴリ（任意）</label>
-          <input class="form-input" type="text" id="edit-category" value="${escapeHTML(item.category || '')}" placeholder="例：キッチン、バス・トイレ" maxlength="20">
+          <input class="form-input" type="text" id="edit-category" value="${escapeHTML(item.category || '')}" placeholder="例：キッチン、バス・トイレ" maxlength="20" list="category-suggestions" autocomplete="off">
         </div>
         <div class="edit-field">
           <label class="form-label">掃除の頻度（日ごと）</label>
@@ -135,7 +152,10 @@ function createEditFormHTML(item) {
         </div>
         <div class="edit-field">
           <label class="form-label">最後に掃除した日</label>
-          <input class="form-input" type="date" id="edit-last-cleaned" value="${item.lastCleaned}">
+          <div class="date-input-row">
+            <input class="form-input" type="date" id="edit-last-cleaned" value="${item.lastCleaned}">
+            <button class="btn btn-today" type="button" onclick="setDateToToday('edit-last-cleaned')">今日</button>
+          </div>
         </div>
       </div>
       <div class="card-actions card-actions-edit">
@@ -189,6 +209,7 @@ function handleSaveEdit(id) {
   }
 
   editingId = null;
+  updateCategoryDatalist();
   renderCards();
 }
 
@@ -209,6 +230,7 @@ function createCardHTML(item) {
   const elapsedDays = calcElapsedDays(item.lastCleaned);
   const status = getStatus(elapsedDays, item.frequency);
   const elapsedText = elapsedDays === 0 ? '今日掃除した' : `${elapsedDays}日前に掃除`;
+  const progressPercent = Math.min(Math.round((elapsedDays / item.frequency) * 100), 100);
 
   // 次の掃除まであと何日か
   const daysUntilNext = item.frequency - elapsedDays;
@@ -244,13 +266,16 @@ function createCardHTML(item) {
         </div>
         <div class="card-info">${elapsedText}（頻度：${item.frequency}日ごと）</div>
         <div class="${countdownClass}">${countdownText}</div>
+        <div class="card-progress">
+          <div class="card-progress-bar" style="width: ${progressPercent}%"></div>
+        </div>
         ${historyHTML}
         <span class="card-status-label">${status.text}</span>
       </div>
       <div class="card-actions">
-        <button class="btn btn-done"   onclick="handleDone('${item.id}')">掃除完了</button>
-        <button class="btn btn-edit"   onclick="handleEditStart('${item.id}')">編集</button>
-        <button class="btn btn-delete" onclick="handleDelete('${item.id}')" title="削除">×</button>
+        <button class="btn btn-done"   onclick="handleDone('${item.id}')"><i class="ti ti-check"></i> 完了</button>
+        <button class="btn btn-edit"   onclick="handleEditStart('${item.id}')" title="編集"><i class="ti ti-pencil"></i></button>
+        <button class="btn btn-delete" onclick="handleDelete('${item.id}')" title="削除"><i class="ti ti-trash"></i></button>
       </div>
     </div>
   `;
@@ -344,6 +369,7 @@ function handleAdd() {
   categoryInput.value    = '';
   frequencyInput.value   = '';
   lastCleanedInput.value = '';
+  updateCategoryDatalist();
   renderCards();
 }
 
@@ -383,6 +409,7 @@ function handleDelete(id) {
 
   const newData = data.filter(function(d) { return d.id !== id; });
   saveData(newData);
+  updateCategoryDatalist();
   renderCards();
 }
 
@@ -436,10 +463,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('btn-add').addEventListener('click', handleAdd);
   document.getElementById('btn-sort').addEventListener('click', handleSortToggle);
+  document.getElementById('btn-today-main').addEventListener('click', function() {
+    setDateToToday('input-last-cleaned');
+  });
 
   document.getElementById('input-last-cleaned').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') handleAdd();
   });
 
+  updateCategoryDatalist();
   renderCards();
 });

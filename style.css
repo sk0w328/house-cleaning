@@ -303,6 +303,37 @@ body {
   box-shadow: 0 0 0 3px rgba(91, 184, 212, 0.12);
 }
 
+/* ===== 日付入力行（インプット＋今日ボタン）===== */
+.date-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.date-input-row .form-input {
+  flex: 1;
+}
+
+/* 「今日」クイックボタン */
+.btn-today {
+  background-color: transparent;
+  color: #5bb8d4;
+  border: 0.5px solid #a8d8ec;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  padding: 0 14px;
+  white-space: nowrap;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.btn-today:hover {
+  background-color: #eef8fc;
+  border-color: #5bb8d4;
+}
+
 /* ===== ボタン共通 ===== */
 .btn {
   display: inline-block;
@@ -415,7 +446,7 @@ body {
 .btn-delete {
   background: none;
   color: #c8d8e0;
-  font-size: 1.1rem;
+  font-size: 0.88rem;
   padding: 6px 8px;
   line-height: 1;
   border-radius: 6px;
@@ -424,6 +455,12 @@ body {
 .btn-delete:hover {
   color: #d97474;
   background-color: #fde8e8;
+}
+
+/* アイコンボタンの縦位置を揃える */
+.btn .ti {
+  font-size: 0.85rem;
+  vertical-align: -1px;
 }
 
 /* ===== 掃除項目カード ===== */
@@ -494,6 +531,25 @@ body {
   margin-top: 3px;
   font-weight: 400;
 }
+
+/* プログレスバー：経過日数 / 頻度の割合を視覚化 */
+.card-progress {
+  height: 3px;
+  background-color: #e4f0f5;
+  border-radius: 2px;
+  margin-top: 7px;
+  overflow: hidden;
+}
+
+.card-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.status-ok .card-progress-bar      { background-color: #5bb8d4; }
+.status-soon .card-progress-bar    { background-color: #e0a847; }
+.status-overdue .card-progress-bar { background-color: #d97474; }
 
 /* 次の掃除までのカウントダウン */
 .card-countdown {
